@@ -6,8 +6,9 @@ import {
   RecipesState,
 } from "../store/recipe/RecipeSlice";
 import { AppDispatch, RootState } from "../store/store";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, Dimensions } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { BtnStyles, shadowStyles } from "../utils/custom_styles";
 
 const CategoryDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,10 +26,21 @@ const CategoryDetails = () => {
     }
   }, [CategoryDetails, dispatch]);
 
+  const width = Dimensions.get("window").width;
+  const height = Dimensions.get("window").height;
+
   const selectedCategory = recipes.selectedCategory;
 
+  const btn = BtnStyles({
+    backgroundColor: "pink",
+    height: null,
+    width: null,
+    // borderRadius: 12,
+    // borderWidth: 2,
+  });
+
   return (
-    <View>
+    <>
       {selectedCategory ? (
         <FlatList
           data={selectedCategory.recipes}
@@ -36,33 +48,103 @@ const CategoryDetails = () => {
             const imagePath = item.image;
 
             return (
-              <View>
+              <View
+                style={{
+                  padding: 10,
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
                 {typeof imagePath === "string" &&
                 (imagePath.startsWith("file://") ||
                   imagePath.startsWith("/")) ? (
                   <Image
-                    source={{ uri: imagePath }} // Local file URI
-                    style={{ width: 200, height: 200 }}
+                    source={{ uri: imagePath }}
+                    style={{
+                      width: width / 2,
+                      height: height / 3,
+                      borderRadius: 12,
+                    }}
                   />
                 ) : typeof imagePath === "number" ? (
                   <Image
-                    source={imagePath} // Static asset
-                    style={{ width: 200, height: 200 }}
+                    source={imagePath}
+                    style={{
+                      width: width / 2,
+                      height: height / 3,
+                      borderRadius: 12,
+                    }}
                   />
                 ) : (
-                  <Text style={{ color: "red", fontSize: 16 }}>
+                  <Text style={{ color: "black", fontSize: 16 }}>
                     Image not found
                   </Text>
                 )}
-                <Text
+                <View
                   style={{
-                    color: "red",
-                    fontSize: 16,
-                    fontWeight: "bold",
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                    width: width / 2,
+                    paddingHorizontal: 10,
+                    position: "relative",
                   }}
                 >
-                  {item.name}
-                </Text>
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 30,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.ingredients.map((e) => {
+                      return (
+                        <Text
+                          key={e}
+                          style={{
+                            borderColor: "pink",
+                            borderRadius: 10,
+                            borderWidth: 2,
+                            color: "black",
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            padding: 3,
+                            marginRight: 5,
+                            marginBottom: 5,
+                          }}
+                        >
+                          {e}
+                        </Text>
+                      );
+                    })}
+                  </View>
+                  <View
+                    style={[
+                      [
+                        btn.btnIcon,
+                        {
+                          // alignSelf: "flex-end",
+                          position: "absolute", // Absolute positioning within the parent
+                          bottom: 10, // Anchors the container to the bottom
+                          right: 10,
+                          padding: 5,
+                        },
+                      ],
+                    ]}
+                  >
+                    <Text>Learn more</Text>
+                  </View>
+                </View>
               </View>
             );
           }}
@@ -70,7 +152,7 @@ const CategoryDetails = () => {
       ) : (
         <Text>No category found</Text>
       )}
-    </View>
+    </>
   );
 };
 

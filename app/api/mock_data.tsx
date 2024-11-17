@@ -19,7 +19,7 @@ export const mockData = [
       },
       {
         name: "Tiramisu",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/tiramisu.jpg"),
         ingredients: [
           "mascarpone cheese",
           "eggs",
@@ -40,7 +40,7 @@ export const mockData = [
       },
       {
         name: "Apple Pie",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/apple_pie.jpg"),
         ingredients: [
           "apples",
           "sugar",
@@ -68,7 +68,7 @@ export const mockData = [
     recipes: [
       {
         name: "Chili Con Carne",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/chili_corn_carne.jpg"),
         ingredients: [
           "ground beef",
           "onion",
@@ -90,7 +90,7 @@ export const mockData = [
       },
       {
         name: "Chicken Fried Steak",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/chicken_fried_stick.jpg"),
         ingredients: [
           "cube steak",
           "flour",
@@ -111,7 +111,7 @@ export const mockData = [
       },
       {
         name: "Beef Brisket",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/beef_brisket.jpg"),
         ingredients: [
           "beef brisket",
           "barbecue sauce",
@@ -136,7 +136,7 @@ export const mockData = [
     recipes: [
       {
         name: "Spaghetti Carbonara",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/spaggeti_carbonara.jpg"),
         ingredients: [
           "spaghetti",
           "eggs",
@@ -157,7 +157,7 @@ export const mockData = [
       },
       {
         name: "Margherita Pizza",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/margeritta_pizza.jpg"),
         ingredients: [
           "pizza dough",
           "tomato sauce",
@@ -178,7 +178,7 @@ export const mockData = [
       },
       {
         name: "Lasagna",
-        image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
+        image: require("../../assets/recipe/lasagna.jpg"),
         ingredients: [
           "ground beef",
           "onion",

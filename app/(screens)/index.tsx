@@ -21,7 +21,7 @@ import { fetchRecipes, RecipesState } from "../store/recipe/RecipeSlice";
 
 const Index = () => {
   const width = Dimensions.get("window").width;
-  var height = Dimensions.get("window").height;
+  const height = Dimensions.get("window").height;
 
   const dispatch = useDispatch<AppDispatch>();
   const recipes: RecipesState = useSelector(

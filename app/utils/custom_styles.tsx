@@ -1,5 +1,5 @@
 // dynamicStyles.ts
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, DimensionValue } from "react-native";
 
 interface Btn {
   borderRadius?: number;
@@ -7,14 +7,8 @@ interface Btn {
   backgroundColor?: string;
   borderColor?: string;
   borderStyle?: "solid" | "dotted" | "dashed";
-}
-
-interface CustomShadow {
-  elevation?: number;
-  shadowColor?: string;
-  shadowOffset?: { width: number; height: number };
-  shadowOpacity?: number;
-  shadowRadius?: number;
+  width?: DimensionValue;
+  height?: DimensionValue;
 }
 
 export const BtnStyles = ({
@@ -23,6 +17,8 @@ export const BtnStyles = ({
   backgroundColor = "",
   borderColor = "",
   borderStyle = "solid",
+  width = 60,
+  height = 60,
 }: Btn) =>
   StyleSheet.create({
     btnIcon: {
@@ -33,10 +29,18 @@ export const BtnStyles = ({
       borderRadius: borderRadius,
       alignItems: "center",
       justifyContent: "center",
-      width: 60,
-      height: 60,
+      width: width,
+      height: height,
     },
   });
+
+interface CustomShadow {
+  elevation?: number;
+  shadowColor?: string;
+  shadowOffset?: { width: number; height: number };
+  shadowOpacity?: number;
+  shadowRadius?: number;
+}
 
 export const shadowStyles = ({
   elevation = 5,

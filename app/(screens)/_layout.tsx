@@ -38,7 +38,7 @@ export default function ScreensLayout() {
                 padding: 5,
               }}
             >
-              <Ionicons name="chevron-back-circle" size={24} color="blue" />
+              <Ionicons name="chevron-back-circle" size={24} color="#FF00BF" />
             </TouchableOpacity>
           ),
         }}
