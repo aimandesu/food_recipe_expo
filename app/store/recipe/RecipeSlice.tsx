@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { z } from "zod";
-import { FoodRecipe, FoodRecipeSchema } from "../scheme/FoodRecipe";
+import { FoodRecipe, FoodRecipeSchema } from "../scheme/FoodRecipeScheme";
 import { mockData } from "@/app/api/mock_data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

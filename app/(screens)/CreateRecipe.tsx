@@ -1,5 +1,5 @@
 import React from "react";
-import { FoodRecipe } from "../store/scheme/FoodRecipe";
+import { FoodRecipe } from "../store/scheme/FoodRecipeScheme";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import {
@@ -8,6 +8,7 @@ import {
   clearAllData,
 } from "../store/recipe/RecipeSlice";
 import { Button } from "react-native";
+import { pickAndSaveImage } from "@/hooks/imagePicker";
 
 const CreateRecipe = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,23 +17,27 @@ const CreateRecipe = () => {
   );
 
   const handleSaveRecipe = async () => {
-    const newRecipe: FoodRecipe = {
-      tag: "Malay",
-      recipes: [
-        {
-          name: "Spaghetti Bolognese",
-          ingredients: ["Pasta", "Tomato Sauce", "Ground Beef"],
-          instructions: ["Cook pasta", "Add sauce", "Mix with beef"],
-        },
-      ],
-    };
-
     try {
-      await dispatch(saveRecipeAsync(newRecipe))
-        // then((result) => {
-        //   dispatch(createRecipe(newRecipe));
-        // }).
-        .unwrap();
+      const imagePath = await pickAndSaveImage();
+
+      if (!imagePath) {
+        alert("Failed to pick image");
+        return;
+      }
+
+      const newRecipe: FoodRecipe = {
+        tag: "Malay",
+        recipes: [
+          {
+            image: imagePath,
+            name: "Spaghetti Bolognese",
+            ingredients: ["Pasta", "Tomato Sauce", "Ground Beef"],
+            instructions: ["Cook pasta", "Add sauce", "Mix with beef"],
+          },
+        ],
+      };
+
+      await dispatch(saveRecipeAsync(newRecipe)).unwrap();
     } catch (error) {
       console.error("Failed to save recipe:", error);
     }
@@ -41,7 +46,6 @@ const CreateRecipe = () => {
   const handleClearStorage = async () => {
     try {
       await dispatch(clearAllData()).unwrap();
-      // Optionally refetch or clear your Redux state here
     } catch (error) {
       console.error("Failed to clear storage:", error);
     }

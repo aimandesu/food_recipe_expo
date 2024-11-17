@@ -137,16 +137,16 @@ const Index = () => {
         data={recipes.recipes}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: "/[CategoryDetails]",
-                params: { CategoryDetails: item.tag },
-              })
-            }
-            style={[
-              {
+        renderItem={({ item, index }) => {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: "/[CategoryDetails]",
+                  params: { CategoryDetails: item.tag },
+                })
+              }
+              style={{
                 ...shadowStyles({
                   shadowColor: "#000",
                   shadowOffset: { width: 0, height: 2 },
@@ -160,28 +160,20 @@ const Index = () => {
                 justifyContent: "center",
                 height: width / 2 - 20, // Square shape
                 borderRadius: 8,
-              },
-            ]}
-          >
-            {/* <Image
-              source={{
-                uri: Asset.fromModule(
-                  "../../assets/recipe/chocolate_lava_cake.jpg"
-                ).uri,
-              }}
-            /> */}
-            {/* <Image source={{ uri: item.recipes[index].image }} /> */}
-            <Text
-              style={{
-                color: "red",
-                fontSize: 16,
-                fontWeight: "bold",
               }}
             >
-              {item.tag}
-            </Text>
-          </TouchableOpacity>
-        )}
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                {item.tag}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
         contentContainerStyle={{
           padding: 10,
         }}
