@@ -4,6 +4,7 @@ export const mockData = [
     recipes: [
       {
         name: "Chocolate Lava Cake",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: ["chocolate", "eggs", "butter", "sugar", "flour"],
         instructions: [
           "Preheat oven to 450°F.",
@@ -18,6 +19,7 @@ export const mockData = [
       },
       {
         name: "Tiramisu",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "mascarpone cheese",
           "eggs",
@@ -38,6 +40,7 @@ export const mockData = [
       },
       {
         name: "Apple Pie",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "apples",
           "sugar",
@@ -65,6 +68,7 @@ export const mockData = [
     recipes: [
       {
         name: "Chili Con Carne",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "ground beef",
           "onion",
@@ -86,6 +90,7 @@ export const mockData = [
       },
       {
         name: "Chicken Fried Steak",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "cube steak",
           "flour",
@@ -106,6 +111,7 @@ export const mockData = [
       },
       {
         name: "Beef Brisket",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "beef brisket",
           "barbecue sauce",
@@ -130,6 +136,7 @@ export const mockData = [
     recipes: [
       {
         name: "Spaghetti Carbonara",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "spaghetti",
           "eggs",
@@ -150,6 +157,7 @@ export const mockData = [
       },
       {
         name: "Margherita Pizza",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "pizza dough",
           "tomato sauce",
@@ -170,6 +178,7 @@ export const mockData = [
       },
       {
         name: "Lasagna",
+        image: "../../assets/recipe/chocolate_lava_cake.jpg",
         ingredients: [
           "ground beef",
           "onion",
