@@ -1,15 +1,29 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { TextInput, View } from "react-native";
 import { BtnStyles } from "../utils/custom_styles";
+import { useDebounce } from "@/hooks/useDebounce";
 
-interface SearchInput {
+interface SearchInputProps {
   input: string;
   onInputChange: (value: string) => void;
+  debounceDelay?: number;
 }
 
-const SearchingBar: React.FC<SearchInput> = ({ input, onInputChange }) => {
+const SearchingBar: React.FC<SearchInputProps> = ({
+  input,
+  onInputChange,
+  debounceDelay = 500,
+}) => {
+  const [localInput, setLocalInput] = useState(input);
+  const debouncedValue = useDebounce(localInput, debounceDelay);
+
+  useEffect(() => {
+    if (debouncedValue !== input) {
+      onInputChange(debouncedValue);
+    }
+  }, [debouncedValue]);
+
   const searchIcon = BtnStyles({});
   const settingIcon = BtnStyles({
     borderWidth: 2,
@@ -19,32 +33,29 @@ const SearchingBar: React.FC<SearchInput> = ({ input, onInputChange }) => {
   });
 
   return (
-    <>
-      <View
-        style={{
-          margin: 5,
-          marginTop: 10,
-          display: "flex",
-          flexDirection: "row",
-          backgroundColor: "whitesmoke",
-          borderRadius: 24,
-        }}
-      >
-        <View style={searchIcon.btnIcon}>
-          <Ionicons name="search" size={24} />
-        </View>
-        <TextInput
-          style={{
-            flexGrow: 1,
-          }}
-          value={input}
-          onChangeText={onInputChange}
-        />
-        <View style={settingIcon.btnIcon}>
-          <Ionicons name="settings" size={24} />
-        </View>
+    <View
+      style={{
+        margin: 5,
+        marginTop: 10,
+        flexDirection: "row",
+        backgroundColor: "whitesmoke",
+        borderRadius: 24,
+      }}
+    >
+      <View style={searchIcon.btnIcon}>
+        <Ionicons name="search" size={24} />
       </View>
-    </>
+      <TextInput
+        style={{
+          flexGrow: 1,
+        }}
+        value={localInput}
+        onChangeText={setLocalInput}
+      />
+      <View style={settingIcon.btnIcon}>
+        <Ionicons name="settings" size={24} />
+      </View>
+    </View>
   );
 };
 

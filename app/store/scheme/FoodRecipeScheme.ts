@@ -19,10 +19,18 @@ const RecipeDetailsSchema = z.object({
 });
 
 // Define the schema for FoodRecipe
-export const FoodRecipeSchema = z.object({
-  tag: z.string(),
-  recipes: z.array(RecipeDetailsSchema),
-});
+export const FoodRecipeSchema = z
+  .object({
+    tag: z.string(),
+    // testing_it: z.string(),
+    recipes: z.array(RecipeDetailsSchema),
+  })
+  .transform((data) => {
+    return {
+      ...data,
+      // testingIt: data.testing_it,
+    };
+  });
 
 // Type inference (automatically generates TypeScript types from schema)
 type RecipeDetails = z.infer<typeof RecipeDetailsSchema>;

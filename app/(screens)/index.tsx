@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Asset } from "expo-asset";
 import {
   View,
@@ -22,6 +22,8 @@ import { fetchRecipes, RecipesState } from "../store/recipe/RecipeSlice";
 const Index = () => {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
   const recipes: RecipesState = useSelector(
@@ -64,10 +66,13 @@ const Index = () => {
               {"Make your own food, \nstay at home"}
             </Text>
             <SearchingBar
-              input=""
-              onInputChange={(k: string) => {
-                console.log(k);
+              input={searchQuery}
+              onInputChange={(value: string) => {
+                setSearchQuery(value);
+                // Your search logic here
+                console.log("Debounced search:", value);
               }}
+              debounceDelay={1500}
             />
             <ScrollView
               horizontal={true}
