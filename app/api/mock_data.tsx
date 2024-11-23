@@ -4,6 +4,7 @@ export const mockData = [
     // testing_it: "lol",
     recipes: [
       {
+        id: 1,
         name: "Chocolate Lava Cake",
         image: require("../../assets/recipe/chocolate_lava_cake.jpg"),
         ingredients: ["chocolate", "eggs", "butter", "sugar", "flour"],
@@ -19,6 +20,7 @@ export const mockData = [
         ],
       },
       {
+        id: 2,
         name: "Tiramisu",
         image: require("../../assets/recipe/tiramisu.jpg"),
         ingredients: [
@@ -41,6 +43,7 @@ export const mockData = [
       },
       {
         name: "Apple Pie",
+        id: 3,
         image: require("../../assets/recipe/apple_pie.jpg"),
         ingredients: [
           "apples",
@@ -69,6 +72,7 @@ export const mockData = [
     // testing_it: "lol",
     recipes: [
       {
+        id: 4,
         name: "Chili Con Carne",
         image: require("../../assets/recipe/chili_corn_carne.jpg"),
         ingredients: [
@@ -91,6 +95,7 @@ export const mockData = [
         ],
       },
       {
+        id: 5,
         name: "Chicken Fried Steak",
         image: require("../../assets/recipe/chicken_fried_stick.jpg"),
         ingredients: [
@@ -112,6 +117,7 @@ export const mockData = [
         ],
       },
       {
+        id: 6,
         name: "Beef Brisket",
         image: require("../../assets/recipe/beef_brisket.jpg"),
         ingredients: [
@@ -138,6 +144,7 @@ export const mockData = [
     // testing_it: "lol",
     recipes: [
       {
+        id: 7,
         name: "Spaghetti Carbonara",
         image: require("../../assets/recipe/spaggeti_carbonara.jpg"),
         ingredients: [
@@ -159,6 +166,7 @@ export const mockData = [
         ],
       },
       {
+        id: 8,
         name: "Margherita Pizza",
         image: require("../../assets/recipe/margeritta_pizza.jpg"),
         ingredients: [
@@ -180,6 +188,7 @@ export const mockData = [
         ],
       },
       {
+        id: 9,
         name: "Lasagna",
         image: require("../../assets/recipe/lasagna.jpg"),
         ingredients: [

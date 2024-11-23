@@ -4,11 +4,11 @@ import {
   fetchRecipes,
   findCategory,
   RecipesState,
-} from "../store/recipe/RecipeSlice";
-import { AppDispatch, RootState } from "../store/store";
+} from "../../store/recipe/RecipeSlice";
+import { AppDispatch, RootState } from "../../store/store";
 import { View, Text, FlatList, Image, Dimensions } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { BtnStyles, shadowStyles } from "../utils/custom_styles";
+import { BtnStyles, shadowStyles } from "../../utils/custom_styles";
 
 const CategoryDetails = () => {
   const dispatch = useDispatch<AppDispatch>();

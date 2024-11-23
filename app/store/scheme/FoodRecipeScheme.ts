@@ -11,8 +11,9 @@ const ImageSchema = z.union([
 ]);
 
 // Define the schema for RecipeDetails
-const RecipeDetailsSchema = z.object({
-  name: z.string().default(""),
+export const RecipeDetailsSchema = z.object({
+  id: z.number().optional(),
+  name: z.string(),
   image: ImageSchema,
   ingredients: z.array(z.string()),
   instructions: z.array(z.string()),
@@ -33,5 +34,5 @@ export const FoodRecipeSchema = z
   });
 
 // Type inference (automatically generates TypeScript types from schema)
-type RecipeDetails = z.infer<typeof RecipeDetailsSchema>;
+export type RecipeDetails = z.infer<typeof RecipeDetailsSchema>;
 export type FoodRecipe = z.infer<typeof FoodRecipeSchema>;

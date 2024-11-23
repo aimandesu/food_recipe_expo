@@ -135,7 +135,9 @@ const Index = () => {
             </ScrollView>
             <Button
               title="Go to Profile"
-              onPress={() => router.push("/RecipeDetails")}
+              onPress={() => {
+                // router.push("/RecipeDetails")
+              }}
             />
           </View>
         }
@@ -147,7 +149,7 @@ const Index = () => {
             <TouchableOpacity
               onPress={() =>
                 router.push({
-                  pathname: "/[CategoryDetails]",
+                  pathname: "/Category/[CategoryDetails]",
                   params: { CategoryDetails: item.tag },
                 })
               }
@@ -201,7 +203,7 @@ const Index = () => {
         ]}
       >
         <Ionicons
-          onPress={() => router.push("/CreateRecipe")}
+          onPress={() => router.push("/(screens)/Recipe/CreateRecipe")}
           name="add"
           size={24}
           color="pink"

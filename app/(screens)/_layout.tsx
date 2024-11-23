@@ -13,20 +13,20 @@ export default function ScreensLayout() {
         }}
       />
       <Stack.Screen
-        name="RecipeDetails"
+        name="Recipe/[RecipeDetails]"
         options={{
           title: "Recipe Details",
         }}
       />
       <Stack.Screen
-        name="CreateRecipe"
+        name="Recipe/CreateRecipe"
         options={{
           title: "Create",
           contentStyle: { backgroundColor: "white" },
         }}
       />
       <Stack.Screen
-        name="[CategoryDetails]"
+        name="Category/[CategoryDetails]"
         options={{
           title: "Categories",
           contentStyle: { backgroundColor: "white" },

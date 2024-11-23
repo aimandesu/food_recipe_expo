@@ -78,14 +78,36 @@ const recipesSlice = createSlice({
 //async function
 export const saveRecipeAsync: any = createAsyncThunk(
   "recipes/saveRecipe",
-  async (recipe: FoodRecipe, { getState }) => {
+  async (newRecipe: FoodRecipe, { getState }) => {
     try {
       const state = getState() as { recipes: RecipesState };
-      const updatedRecipes = [...state.recipes.recipes, recipe];
+      const currentRecipes = state.recipes.recipes.flatMap(
+        (recipeGroup) => recipeGroup.recipes
+      );
+
+      // Find the maximum id
+      const maxId = currentRecipes.reduce(
+        (max, recipe) => Math.max(max, recipe.id || 0),
+        0
+      );
+
+      // Assign new IDs to the recipes in the new group
+      const recipesWithIds = newRecipe.recipes.map((recipe, index) => ({
+        ...recipe,
+        id: maxId + index + 1, // Increment id for each new recipe
+      }));
+
+      const updatedRecipeGroup = {
+        ...newRecipe,
+        recipes: recipesWithIds,
+      };
+
+      // Update the state
+      const updatedRecipes = [...state.recipes.recipes, updatedRecipeGroup];
       const jsonValue = JSON.stringify(updatedRecipes);
       await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
 
-      return recipe;
+      return updatedRecipeGroup;
     } catch (error) {
       console.error("Failed to save recipe", error);
       throw error;
