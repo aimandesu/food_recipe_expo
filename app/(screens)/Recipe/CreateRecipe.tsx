@@ -40,7 +40,7 @@ const CreateRecipe = () => {
     (state: RootState) => state.recipes
   );
 
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState(recipes.recipes[0].tag);
 
   const {
     control,
@@ -150,7 +150,7 @@ const CreateRecipe = () => {
       <Controller
         control={control}
         name="name"
-        rules={{ required: "Name is required" }}
+        // rules={{ required: "Name is required" }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.input}
@@ -162,7 +162,7 @@ const CreateRecipe = () => {
       />
       {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
-      <Text style={styles.label}>Ingredients (comma-separated)</Text>
+      <Text style={styles.label}>Ingredients</Text>
       {/* <Controller
         control={control}
         name="ingredients"
@@ -175,12 +175,12 @@ const CreateRecipe = () => {
             placeholder="e.g., Pasta, Tomato Sauce, Ground Beef"
           />
         )}
-      />
+      /> */}
       {errors.ingredients && (
         <Text style={styles.error}>{errors.ingredients.message}</Text>
-      )} */}
+      )}
 
-      <Text style={styles.label}>Instructions (comma-separated)</Text>
+      <Text style={styles.label}>Instructions</Text>
       {/* <Controller
         control={control}
         name="instructions"
@@ -193,10 +193,10 @@ const CreateRecipe = () => {
             placeholder="e.g., Cook pasta, Add sauce, Mix with beef"
           />
         )}
-      />
+      /> */}
       {errors.instructions && (
         <Text style={styles.error}>{errors.instructions.message}</Text>
-      )} */}
+      )}
 
       <Button
         disabled={isSubmitting}

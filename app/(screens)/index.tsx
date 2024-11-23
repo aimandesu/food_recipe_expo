@@ -136,7 +136,7 @@ const Index = () => {
             <Button
               title="Go to Profile"
               onPress={() => {
-                // router.push("/RecipeDetails")
+                router.push("/(screens)/generic_test_head");
               }}
             />
           </View>
@@ -186,29 +186,28 @@ const Index = () => {
         }}
         nestedScrollEnabled={true}
       />
-      <View
-        style={[
-          menuIcon.btnIcon,
-          {
-            ...shadowStyles({
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 5,
-            }),
-            position: "absolute",
-            bottom: 16,
-            right: 16,
-          },
-        ]}
+      <TouchableOpacity
+        onPress={() => router.push("/(screens)/Recipe/CreateRecipe")}
       >
-        <Ionicons
-          onPress={() => router.push("/(screens)/Recipe/CreateRecipe")}
-          name="add"
-          size={24}
-          color="pink"
-        />
-      </View>
+        <View
+          style={[
+            menuIcon.btnIcon,
+            {
+              ...shadowStyles({
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 5,
+              }),
+              position: "absolute",
+              bottom: 16,
+              right: 16,
+            },
+          ]}
+        >
+          <Ionicons name="add" size={24} color="pink" />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

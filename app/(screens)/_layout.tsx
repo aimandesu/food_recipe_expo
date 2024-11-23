@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
 import { TouchableOpacity } from "react-native";
+import { Provider } from "react-redux";
+import { genericStore } from "../store/generic_store";
 
 export default function ScreensLayout() {
   return (
@@ -41,6 +43,13 @@ export default function ScreensLayout() {
               <Ionicons name="chevron-back-circle" size={24} color="#FF00BF" />
             </TouchableOpacity>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="generic_test_head"
+        options={{
+          title: "GenericTestHead",
+          contentStyle: { backgroundColor: "white" },
         }}
       />
     </Stack>

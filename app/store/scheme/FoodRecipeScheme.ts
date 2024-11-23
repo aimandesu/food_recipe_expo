@@ -13,10 +13,16 @@ const ImageSchema = z.union([
 // Define the schema for RecipeDetails
 export const RecipeDetailsSchema = z.object({
   id: z.number().optional(),
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Recipe name is required"),
   image: ImageSchema,
-  ingredients: z.array(z.string()).default([]),
-  instructions: z.array(z.string()).default([]),
+  ingredients: z
+    .array(z.string())
+    .min(1, "At least one ingredient is required")
+    .default([]),
+  instructions: z
+    .array(z.string())
+    .min(1, "At least one instruction is required")
+    .default([]),
 });
 
 // Define the schema for FoodRecipe
