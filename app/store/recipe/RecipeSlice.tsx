@@ -1,6 +1,10 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { z } from "zod";
-import { FoodRecipe, FoodRecipeSchema } from "../scheme/FoodRecipeScheme";
+import {
+  FoodRecipe,
+  FoodRecipeSchema,
+  RecipeDetails,
+} from "../scheme/FoodRecipeScheme";
 import { mockData } from "@/app/api/mock_data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -50,8 +54,7 @@ const recipesSlice = createSlice({
         state.error = null;
       })
       .addCase(saveRecipeAsync.fulfilled, (state, action) => {
-        state.recipes = [...state.recipes, action.payload];
-        state.loading = false;
+        (state.recipes = action.payload), (state.loading = false);
       })
       .addCase(saveRecipeAsync.rejected, (state, action) => {
         state.loading = false;
@@ -78,36 +81,55 @@ const recipesSlice = createSlice({
 //async function
 export const saveRecipeAsync: any = createAsyncThunk(
   "recipes/saveRecipe",
-  async (newRecipe: FoodRecipe, { getState }) => {
+  async (recipeDetails: RecipeDetails & { tag: string }, { getState }) => {
     try {
+      // Retrieve the current state
       const state = getState() as { recipes: RecipesState };
-      const currentRecipes = state.recipes.recipes.flatMap(
-        (recipeGroup) => recipeGroup.recipes
-      );
 
-      // Find the maximum id
+      // Flatten existing recipes to get a list of all recipes
+      const currentRecipes = state.recipes.recipes.flatMap((r) => r.recipes);
+
+      // Find the highest current id and increment it
       const maxId = currentRecipes.reduce(
-        (max, recipe) => Math.max(max, recipe.id || 0),
+        (max, r) => (r.id && r.id > max ? r.id : max),
         0
       );
 
-      // Assign new IDs to the recipes in the new group
-      const recipesWithIds = newRecipe.recipes.map((recipe, index) => ({
-        ...recipe,
-        id: maxId + index + 1, // Increment id for each new recipe
-      }));
-
-      const updatedRecipeGroup = {
-        ...newRecipe,
-        recipes: recipesWithIds,
+      // Add an id to the new recipe
+      const newRecipeWithId = {
+        ...recipeDetails,
+        id: maxId + 1, // Assign the next available id
       };
 
-      // Update the state
-      const updatedRecipes = [...state.recipes.recipes, updatedRecipeGroup];
+      // Check if a FoodRecipe with the same tag already exists
+      const existingTagIndex = state.recipes.recipes.findIndex(
+        (r) => r.tag === recipeDetails.tag
+      );
+
+      let updatedRecipes;
+      if (existingTagIndex > -1) {
+        // If the tag exists, append the new recipe to the existing recipes
+        updatedRecipes = [...state.recipes.recipes];
+        updatedRecipes[existingTagIndex] = {
+          ...updatedRecipes[existingTagIndex],
+          recipes: [
+            ...updatedRecipes[existingTagIndex].recipes,
+            newRecipeWithId,
+          ],
+        };
+      } else {
+        // If the tag does not exist, create a new FoodRecipe entry
+        const newFoodRecipe: FoodRecipe = {
+          tag: recipeDetails.tag,
+          recipes: [newRecipeWithId],
+        };
+        updatedRecipes = [...state.recipes.recipes, newFoodRecipe];
+      }
+
+      // Save the updated state to AsyncStorage
       const jsonValue = JSON.stringify(updatedRecipes);
       await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
-
-      return updatedRecipeGroup;
+      return updatedRecipes;
     } catch (error) {
       console.error("Failed to save recipe", error);
       throw error;
@@ -132,8 +154,6 @@ export const clearAllData: any = createAsyncThunk(
 export const fetchRecipes: any = createAsyncThunk(
   "recipes/fetchRecipes",
   async (_, { rejectWithValue }) => {
-    console.log("it runs");
-
     try {
       const storedData = await AsyncStorage.getItem(STORAGE_KEY);
 

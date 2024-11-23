@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, TextInput, View, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  Button,
+  TextInput,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
@@ -18,20 +25,22 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-// type FormFields = z.infer<typeof RecipeDetailsSchema>;
+type FormFields = z.infer<typeof RecipeDetailsSchema>;
 
-type FormFields = {
-  tag: string;
-  name: string;
-  ingredients: string;
-  instructions: string;
-};
+// type FormFields = {
+//   tag: string;
+//   name: string;
+//   ingredients: string;
+//   instructions: string;
+// };
 
 const CreateRecipe = () => {
   const dispatch = useDispatch<AppDispatch>();
   const recipes: RecipesState = useSelector(
     (state: RootState) => state.recipes
   );
+
+  const [tag, setTag] = useState("");
 
   const {
     control,
@@ -40,15 +49,16 @@ const CreateRecipe = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      tag: "",
+      id: 0,
+      image: "file://placeholder",
       name: "",
-      ingredients: "",
-      instructions: "",
+      ingredients: [],
+      instructions: [],
     },
-    // resolver: zodResolver(RecipeDetailsSchema),
+    resolver: zodResolver(RecipeDetailsSchema),
   });
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<FormFields> = async (data: FormFields) => {
     try {
       const imagePath = await pickAndSaveImage();
       if (!imagePath) {
@@ -56,22 +66,22 @@ const CreateRecipe = () => {
         return;
       }
 
-      const newRecipe: FoodRecipe = {
-        tag: data.tag,
-        recipes: [
-          {
-            name: data.name,
-            ingredients: [""],
-            instructions: [""],
-            image: imagePath,
-          },
-        ],
+      const recipeWithTag: RecipeDetails & { tag: string } = {
+        name: data.name,
+        image: imagePath,
+        ingredients: data.ingredients,
+        instructions: data.instructions,
+        tag: tag,
       };
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await dispatch(saveRecipeAsync(newRecipe)).unwrap();
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      await dispatch(saveRecipeAsync(recipeWithTag)).unwrap();
       reset(); // Reset form after successful submission
     } catch (error) {
       console.error("Failed to save recipe:", error);
+      alert(
+        "Failed to save recipe: " +
+          (error instanceof Error ? error.message : "Unknown error")
+      );
     }
   };
 
@@ -86,7 +96,42 @@ const CreateRecipe = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Recipe Tag</Text>
-      <Controller
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+        }}
+      >
+        {recipes.recipes.map((e, index) => (
+          <View
+            key={index}
+            style={{
+              borderColor: "pink",
+              borderRadius: 10,
+              borderWidth: 2,
+              backgroundColor: tag === e.tag ? "pink" : "transparent",
+              marginRight: 5,
+              marginBottom: 5,
+            }}
+          >
+            <TouchableOpacity onPress={() => setTag(e.tag)}>
+              <Text
+                style={{
+                  color: tag === e.tag ? "white" : "black",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  padding: 5,
+                }}
+              >
+                {e.tag}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      {/* <Controller
         control={control}
         name="tag"
         rules={{ required: "Tag is required" }}
@@ -99,7 +144,7 @@ const CreateRecipe = () => {
           />
         )}
       />
-      {errors.tag && <Text style={styles.error}>{errors.tag.message}</Text>}
+      {errors.tag && <Text style={styles.error}>{errors.tag.message}</Text>} */}
 
       <Text style={styles.label}>Recipe Name</Text>
       <Controller
@@ -118,7 +163,7 @@ const CreateRecipe = () => {
       {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
       <Text style={styles.label}>Ingredients (comma-separated)</Text>
-      <Controller
+      {/* <Controller
         control={control}
         name="ingredients"
         rules={{ required: "Ingredients are required" }}
@@ -133,10 +178,10 @@ const CreateRecipe = () => {
       />
       {errors.ingredients && (
         <Text style={styles.error}>{errors.ingredients.message}</Text>
-      )}
+      )} */}
 
       <Text style={styles.label}>Instructions (comma-separated)</Text>
-      <Controller
+      {/* <Controller
         control={control}
         name="instructions"
         rules={{ required: "Instructions are required" }}
@@ -151,7 +196,7 @@ const CreateRecipe = () => {
       />
       {errors.instructions && (
         <Text style={styles.error}>{errors.instructions.message}</Text>
-      )}
+      )} */}
 
       <Button
         disabled={isSubmitting}
