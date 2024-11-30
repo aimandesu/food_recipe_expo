@@ -71,7 +71,9 @@ const Index = () => {
                 setSearchQuery(value);
                 // Your search logic here
                 console.log("Debounced search:", value);
+                //go to another page and use that debounce value
               }}
+              onKeyPress={() => router.push(`/Search/${searchQuery}`)}
               debounceDelay={1500}
             />
             <ScrollView

@@ -8,12 +8,14 @@ interface SearchInputProps {
   input: string;
   onInputChange: (value: string) => void;
   debounceDelay?: number;
+  onKeyPress: () => void;
 }
 
 const SearchingBar: React.FC<SearchInputProps> = ({
   input,
   onInputChange,
   debounceDelay = 500,
+  onKeyPress,
 }) => {
   const [localInput, setLocalInput] = useState(input);
   const debouncedValue = useDebounce(localInput, debounceDelay);
@@ -51,6 +53,7 @@ const SearchingBar: React.FC<SearchInputProps> = ({
         }}
         value={localInput}
         onChangeText={setLocalInput}
+        onSubmitEditing={onKeyPress}
       />
       <View style={settingIcon.btnIcon}>
         <Ionicons name="settings" size={24} />

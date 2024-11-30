@@ -15,6 +15,7 @@ export interface RecipesState {
   loading: boolean;
   error: string | null;
   selectedCategory: FoodRecipe | null;
+  selectedRecipe: RecipeDetails | null;
 }
 
 const initialState: RecipesState = {
@@ -22,6 +23,7 @@ const initialState: RecipesState = {
   loading: false,
   error: null,
   selectedCategory: null,
+  selectedRecipe: null,
 };
 
 const recipesSlice = createSlice({
@@ -32,6 +34,19 @@ const recipesSlice = createSlice({
       const tag = action.payload;
       state.selectedCategory =
         state.recipes.find((category) => category.tag === tag) || null;
+    },
+    findRecipeDetails: (
+      state,
+      action: PayloadAction<{
+        tag: string;
+        id: number;
+      }>
+    ) => {
+      const { tag, id } = action.payload;
+      state.selectedRecipe =
+        state.recipes
+          .flatMap((food) => (food.tag === tag ? food.recipes : []))
+          .find((recipe) => recipe.id === id) || null;
     },
   },
   extraReducers: (builder) => {
@@ -181,5 +196,5 @@ export const fetchRecipes: any = createAsyncThunk(
   }
 );
 
-export const { findCategory } = recipesSlice.actions;
+export const { findCategory, findRecipeDetails } = recipesSlice.actions;
 export default recipesSlice.reducer;

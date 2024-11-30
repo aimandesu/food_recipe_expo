@@ -15,7 +15,7 @@ export default function ScreensLayout() {
         }}
       />
       <Stack.Screen
-        name="Recipe/[RecipeDetails]"
+        name="Recipe/RecipeDetails/[id]"
         options={{
           title: "Recipe Details",
         }}
@@ -50,6 +50,14 @@ export default function ScreensLayout() {
         options={{
           title: "GenericTestHead",
           contentStyle: { backgroundColor: "white" },
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        options={{
+          title: "Meal Search",
+          contentStyle: { backgroundColor: "white" },
+          headerShown: false,
         }}
       />
     </Stack>

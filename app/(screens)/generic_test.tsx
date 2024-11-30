@@ -2,8 +2,14 @@ import { View, Text, Button } from "react-native";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "../store/generic_store"; // Import your store types
+import { GenericRootState } from "../store/generic_store"; // Import your store types
 import { createGenericSlice } from "../store/generic_slice";
+import {
+  countSlice,
+  productSlice,
+  statusSlice,
+} from "../utils/provider_wrapper";
+import { OrderStatus } from "../utils/enum";
 // import {
 //   countSlice,
 //   OrderStatus,
@@ -11,39 +17,13 @@ import { createGenericSlice } from "../store/generic_slice";
 //   statusSlice,
 // } from "../store/generic_slice";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
-
-enum OrderStatus {
-  PENDING = "PENDING",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-}
-
-// Create slices for different types
-export const productSlice = createGenericSlice<Product>("product", {
-  id: 0,
-  name: "",
-  price: 0,
-});
-
-export const statusSlice = createGenericSlice<OrderStatus>(
-  "status",
-  OrderStatus.PENDING
-);
-
-export const countSlice = createGenericSlice<number>("count", 0);
-
 const GenericTest = () => {
   const dispatch = useDispatch();
 
   // Select different states from our store
-  const productState = useSelector((state: RootState) => state.product);
-  const statusState = useSelector((state: RootState) => state.status);
-  const countState = useSelector((state: RootState) => state.count);
+  const productState = useSelector((state: GenericRootState) => state.product);
+  const statusState = useSelector((state: GenericRootState) => state.status);
+  const countState = useSelector((state: GenericRootState) => state.count);
 
   // Example handlers for different types
   const handleUpdateProduct = () => {

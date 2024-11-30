@@ -16,13 +16,13 @@ export const RecipeDetailsSchema = z.object({
   name: z.string().min(1, "Recipe name is required"),
   image: ImageSchema,
   ingredients: z
-    .array(z.string())
-    .min(1, "At least one ingredient is required")
-    .default([]),
+    .array(z.string().min(1, "Ingredient cannot be empty"))
+    .min(1, "At least one ingredient is required"),
+  // .default([]),
   instructions: z
-    .array(z.string())
-    .min(1, "At least one instruction is required")
-    .default([]),
+    .array(z.string().min(1, "Instruction cannot be empty"))
+    .min(1, "At least one instruction is required"),
+  // .default([]),
 });
 
 // Define the schema for FoodRecipe

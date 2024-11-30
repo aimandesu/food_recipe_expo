@@ -6,8 +6,15 @@ import {
   RecipesState,
 } from "../../store/recipe/RecipeSlice";
 import { AppDispatch, RootState } from "../../store/store";
-import { View, Text, FlatList, Image, Dimensions } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { BtnStyles, shadowStyles } from "../../utils/custom_styles";
 
 const CategoryDetails = () => {
@@ -128,6 +135,7 @@ const CategoryDetails = () => {
                       );
                     })}
                   </View>
+
                   <View
                     style={[
                       [
@@ -142,7 +150,19 @@ const CategoryDetails = () => {
                       ],
                     ]}
                   >
-                    <Text>Learn more</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        router.push({
+                          pathname: "/Recipe/RecipeDetails/[id]",
+                          params: {
+                            tag: CategoryDetails,
+                            id: `${item.id}`,
+                          },
+                        });
+                      }}
+                    >
+                      <Text>Learn more</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

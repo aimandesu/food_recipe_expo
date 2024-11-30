@@ -6,8 +6,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+} from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
@@ -33,6 +39,57 @@ type FormFields = z.infer<typeof RecipeDetailsSchema>;
 //   ingredients: string;
 //   instructions: string;
 // };
+
+const DynamicField = ({
+  control,
+  name,
+  label,
+  errors,
+}: {
+  control: any;
+  name: "ingredients" | "instructions";
+  label: string;
+  errors: any;
+}) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name,
+  });
+
+  return (
+    <View style={styles.fieldArray}>
+      <Text style={styles.label}>{label}</Text>
+      {fields.map((field, index) => (
+        <View key={field.id} style={styles.fieldRow}>
+          <Controller
+            control={control}
+            name={`${name}.${index}`}
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.arrayInput}
+                onChangeText={onChange}
+                value={value}
+                placeholder={`Enter ${name.slice(0, -1)} #${index + 1}`}
+              />
+            )}
+          />
+          {fields.length > 1 && (
+            <TouchableOpacity
+              onPress={() => remove(index)}
+              style={styles.removeButton}
+            >
+              <Text style={styles.removeButtonText}>×</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      ))}
+      {errors[name] && <Text style={styles.error}>{errors[name].message}</Text>}
+      <TouchableOpacity onPress={() => append("")} style={styles.addButton}>
+        <Text style={styles.addButtonText}>+ Add {label.slice(0, -1)}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const CreateRecipe = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -94,7 +151,12 @@ const CreateRecipe = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={{
+        flex: 1,
+        padding: 20,
+      }}
+    >
       <Text style={styles.label}>Recipe Tag</Text>
       <View
         style={{
@@ -162,7 +224,7 @@ const CreateRecipe = () => {
       />
       {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
 
-      <Text style={styles.label}>Ingredients</Text>
+      {/* <Text style={styles.label}>Ingredients</Text> */}
       {/* <Controller
         control={control}
         name="ingredients"
@@ -176,11 +238,11 @@ const CreateRecipe = () => {
           />
         )}
       /> */}
-      {errors.ingredients && (
+      {/* {errors.ingredients && (
         <Text style={styles.error}>{errors.ingredients.message}</Text>
-      )}
+      )} */}
 
-      <Text style={styles.label}>Instructions</Text>
+      {/* <Text style={styles.label}>Instructions</Text> */}
       {/* <Controller
         control={control}
         name="instructions"
@@ -194,9 +256,23 @@ const CreateRecipe = () => {
           />
         )}
       /> */}
-      {errors.instructions && (
+      {/* {errors.instructions && (
         <Text style={styles.error}>{errors.instructions.message}</Text>
-      )}
+      )} */}
+
+      <DynamicField
+        control={control}
+        name="ingredients"
+        label="Ingredients"
+        errors={errors}
+      />
+
+      <DynamicField
+        control={control}
+        name="instructions"
+        label="Instructions"
+        errors={errors}
+      />
 
       <Button
         disabled={isSubmitting}
@@ -204,15 +280,11 @@ const CreateRecipe = () => {
         onPress={handleSubmit(onSubmit)}
       />
       <Button title="Clear All Data" onPress={handleClearStorage} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
   label: {
     fontSize: 16,
     fontWeight: "bold",
@@ -228,6 +300,76 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginBottom: 10,
+  },
+  fieldArray: {
+    marginBottom: 15,
+  },
+  fieldRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  arrayInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 8,
+  },
+  removeButton: {
+    backgroundColor: "#ff4444",
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  removeButtonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  addButton: {
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 5,
+  },
+  addButtonText: {
+    color: "#666",
+    fontWeight: "bold",
+  },
+  tagContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  tagButton: {
+    borderColor: "pink",
+    borderRadius: 10,
+    borderWidth: 2,
+    marginRight: 5,
+    marginBottom: 5,
+  },
+  tagButtonActive: {
+    backgroundColor: "pink",
+  },
+  tagText: {
+    color: "black",
+    fontSize: 15,
+    fontWeight: "bold",
+    padding: 5,
+  },
+  tagTextActive: {
+    color: "white",
+  },
+  buttonContainer: {
+    marginTop: 20,
+    marginBottom: 40,
+  },
+  buttonSpacing: {
+    height: 10,
   },
 });
 
