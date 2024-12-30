@@ -38,7 +38,6 @@ const SearchingBar: React.FC<SearchInputProps> = ({
     <View
       style={{
         margin: 5,
-        marginTop: 10,
         flexDirection: "row",
         backgroundColor: "whitesmoke",
         borderRadius: 24,
@@ -54,9 +53,17 @@ const SearchingBar: React.FC<SearchInputProps> = ({
         value={localInput}
         onChangeText={setLocalInput}
         onSubmitEditing={onKeyPress}
+        placeholder="Search any recipe"
       />
-      <View style={settingIcon.btnIcon}>
-        <Ionicons name="settings" size={24} />
+      <View
+        style={{
+          ...settingIcon.btnIcon,
+          height: 50,
+          width: 50,
+          alignSelf: "center",
+        }}
+      >
+        <Ionicons name="options" size={24} />
       </View>
     </View>
   );

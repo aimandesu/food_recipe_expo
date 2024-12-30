@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { Provider } from "react-redux";
 import { genericStore } from "../store/generic_store";
 
@@ -11,7 +11,24 @@ export default function ScreensLayout() {
         name="index"
         options={{
           title: "Food Recipe",
-          contentStyle: { backgroundColor: "white" },
+          headerShadowVisible: false,
+          contentStyle: {
+            backgroundColor: "white",
+          },
+          headerStyle: {
+            // backgroundColor: "red",
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.push("/Profile");
+                // router.push(`/Profile`);
+              }}
+              style={{ marginRight: 10 }}
+            >
+              <Ionicons name="person" size={24} />
+            </TouchableOpacity>
+          ),
         }}
       />
       <Stack.Screen
@@ -56,6 +73,14 @@ export default function ScreensLayout() {
         name="Search"
         options={{
           title: "Meal Search",
+          contentStyle: { backgroundColor: "white" },
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        options={{
+          title: "Profile",
           contentStyle: { backgroundColor: "white" },
           headerShown: false,
         }}

@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Pressable,
 } from "react-native";
 import { Category } from "../utils/enum";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,6 +19,7 @@ import { BtnStyles, shadowStyles } from "../utils/custom_styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { fetchRecipes, RecipesState } from "../store/recipe/RecipeSlice";
+import CustomButton from "../components/CustomButton";
 
 const Index = () => {
   const width = Dimensions.get("window").width;
@@ -135,18 +137,23 @@ const Index = () => {
                 </View>
               ))}
             </ScrollView>
-            <Button
-              title="Go to Profile"
-              onPress={() => {
-                router.push("/(screens)/generic_test_head");
-              }}
-            />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Go to profile screen"
+              accessibilityHint="Navigates to the user profile screen when pressed"
+            >
+              <CustomButton
+                text="go to generic stuff - not working as of now"
+                onTap={() => router.push("/(screens)/generic_test_head")}
+              />
+            </Pressable>
           </View>
         }
         data={recipes.recipes}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
         renderItem={({ item, index }) => {
+          const imagePath = item.recipes[0]?.image;
           return (
             <TouchableOpacity
               onPress={() =>
@@ -171,11 +178,51 @@ const Index = () => {
                 borderRadius: 8,
               }}
             >
+              {/* Image Component */}
+              {typeof imagePath === "string" &&
+              (imagePath.startsWith("file://") || imagePath.startsWith("/")) ? (
+                <Image
+                  source={{ uri: imagePath }}
+                  style={{
+                    width: width / 2 - 40,
+                    height: width / 2 - 40,
+                    borderRadius: 8,
+                  }}
+                  resizeMode="cover"
+                />
+              ) : typeof imagePath === "number" ? (
+                <Image
+                  source={imagePath}
+                  style={{
+                    width: width / 2 - 40,
+                    height: width / 2 - 40,
+                    borderRadius: 8,
+                  }}
+                  resizeMode="cover"
+                />
+              ) : (
+                // Placeholder when the imagePath is invalid or undefined
+                <Text
+                  style={{
+                    color: "gray",
+                    fontSize: 14,
+                  }}
+                >
+                  No Image Available
+                </Text>
+              )}
+
+              {/* Text Overlay */}
               <Text
                 style={{
-                  color: "red",
+                  // color: "red",
                   fontSize: 16,
                   fontWeight: "bold",
+                  position: "absolute",
+                  bottom: 60,
+                  backgroundColor: "rgba(255, 255, 255, 0.7)",
+                  paddingHorizontal: 5,
+                  borderRadius: 5,
                 }}
               >
                 {item.tag}
@@ -188,28 +235,29 @@ const Index = () => {
         }}
         nestedScrollEnabled={true}
       />
-      <TouchableOpacity
-        onPress={() => router.push("/(screens)/Recipe/CreateRecipe")}
+
+      <View
+        style={[
+          menuIcon.btnIcon,
+          {
+            ...shadowStyles({
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.2,
+              shadowRadius: 5,
+            }),
+            position: "absolute",
+            bottom: 16,
+            right: 16,
+          },
+        ]}
       >
-        <View
-          style={[
-            menuIcon.btnIcon,
-            {
-              ...shadowStyles({
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.2,
-                shadowRadius: 5,
-              }),
-              position: "absolute",
-              bottom: 16,
-              right: 16,
-            },
-          ]}
+        <TouchableOpacity
+          onPress={() => router.push("/(screens)/Recipe/CreateRecipe")}
         >
           <Ionicons name="add" size={24} color="pink" />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
